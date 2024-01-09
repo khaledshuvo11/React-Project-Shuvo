@@ -43,13 +43,13 @@ function Layout() {
                             <Link class="nav-link" to="/">Home</Link>
                         </li>
                         <li class="nav-item">
-                            <Link class="nav-link" to="/blogs"> About</Link>
+                            <Link class="nav-link" to="/blogs">About</Link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="service.html">Services</a>
+                            <Link class="nav-link" to="/*">Service</Link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact Us</a>
+                            <Link class="nav-link" to="/contact">Contact Us</Link>
                         </li>
                         </ul>
                     </div>
