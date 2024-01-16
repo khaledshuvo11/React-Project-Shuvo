@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-function Todo ({ todos }) {
+function Todos ({ todos, addTodo }) {
     console.log("child render");
     return (
         <>
@@ -8,7 +8,8 @@ function Todo ({ todos }) {
             {todos.map((todo, index) => {
                 return <p key={index}>{todo}</p>;
             })}
+            <button onClick={addTodo}>Add Todo</button>
         </>
     );
 }
-export default memo(Todo);
+export default memo(Todos);

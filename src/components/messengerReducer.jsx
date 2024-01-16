@@ -2,7 +2,6 @@ export const initialState = {
     selectedId: 0,
     message: 'Hello',
   };
-  
   export function messengerReducer(state, action) {
     switch (action.type) {
       case 'changed_selection': {
@@ -10,7 +9,7 @@ export const initialState = {
           ...state,
           selectedId: action.contactId,
           message: '',
-        };
+        };                              
       }
       case 'edited_message': {
         return {
@@ -23,4 +22,83 @@ export const initialState = {
       }
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
