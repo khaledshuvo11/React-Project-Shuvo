@@ -14,7 +14,7 @@
 
 // //   return (
 // //     <>
-// //       <Reducer />
+// //      <Reducer />
 // //       <BrowserRouter>
 // //         <Routes>
 // //           <Route path="/" element={<Layout />}>
@@ -49,7 +49,7 @@
 //   if (headingElement.current) {
 //     headingElement.current.innerHTML = 'aaaaaaaaaaaaa';
 //   }
-  
+
 
 //   return (
 //     <>
@@ -96,38 +96,17 @@
 // ];
 
 
-import React, { useEffect, useState } from 'react'
-import useFetch from './useFetch';
+import UserCreateEdit from './components/user/UserCreateEdit';
+import UserIndex from './components/user/UserIndex';
+import { Route, Routes } from 'react-router-dom';
 
 export default function App() {
-
-  const [data] = useFetch("https://jsonplaceholder.typicode.com/users");
-
-  return (
-    <>
-      <table width="100%" border="1" style={{ borderCollapse: 'collapse' }}>
-        <tr>
-          <th>Name</th>
-          <th>E-mail</th>
-          <th>ID</th>
-          <th>Phone</th>
-          <th>Username</th>
-          <th>Website</th>
-          <th>Address</th>
-        </tr>
-        {data &&
-        data.map((item) => (
-          <tr>
-            <td>{item.name}</td>
-            <td>{item.email}</td>
-            <td>{item.id}</td>
-            <td>{item.phone}</td>
-            <td>{item.username}</td>
-            <td>{item.website}</td>
-            <td>{item.address.city}</td>
-          </tr>
-        ))}
-      </table>
-    </>
-  );
+    return (
+        <>
+            <Routes>
+                <Route path="/" element={ <UserIndex /> } />
+                <Route path="/user/create" element={ <UserCreateEdit /> } />
+            </Routes>
+        </>
+    );
 }
