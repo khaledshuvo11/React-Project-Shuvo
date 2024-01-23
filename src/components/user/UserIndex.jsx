@@ -6,8 +6,10 @@ import UserCreateEdit from './UserCreateEdit';
 export default function UserIndex() {
     const [users, setUsers] = useState([]);
 
-    const { user } = route.params;
-    console.log(user, 'user');
+    useEffect(() => {
+        const userList = JSON.parse(localStorage.getItem('user_list'));
+        setUsers(userList);
+    }, [])
 
     return (
         <div className="container">
@@ -19,24 +21,22 @@ export default function UserIndex() {
                 <tr>
                     <th>Name</th>
                     <th>E-mail</th>
-                    <th>ID</th>
-                    <th>Phone</th>
-                    <th>Username</th>
-                    <th>Website</th>
-                    <th>Address</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
                     <th>Action</th>
                 </tr>
                 {
-                    users && users.map((item) => (
+                    users && users.map((item, i) => (
                         <tr>
                             <td>{item.name}</td>
                             <td>{item.email}</td>
-                            <td>{item.id}</td>
-                            <td>{item.phone}</td>
-                            <td>{item.username}</td>
-                            <td>{item.website}</td>
-                            <td>{item.address.city}</td>
-                            <td>Edit</td>
+                            <td>{item.date_of_birth}</td>
+                            <td>{item.gender}</td>
+                            <td>
+                                <Link to={`user/create?index=${i}`}>
+                                    Edit
+                                </Link>
+                            </td>
                         </tr>
                     ))
                 }
