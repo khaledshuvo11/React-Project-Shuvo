@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import useFetch from '../../useFetch';
 import { Link } from 'react-router-dom';
-import UserCreateEdit from './UserCreateEdit';
 
 export default function UserIndex() {
     const [users, setUsers] = useState([]);
@@ -10,6 +8,14 @@ export default function UserIndex() {
         const userList = JSON.parse(localStorage.getItem('user_list'));
         setUsers(userList);
     }, [])
+
+    function handleDelete(index) {
+        let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
+        userList.splice(index, 1)
+        console.log('index', index);
+        localStorage.setItem('user_list', JSON.stringify(userList));
+        setUsers(userList);
+    }
 
     return (
         <div className="container">
@@ -33,9 +39,10 @@ export default function UserIndex() {
                             <td>{item.date_of_birth}</td>
                             <td>{item.gender}</td>
                             <td>
-                                <Link to={`user/create?index=${i}`}>
-                                    Edit
+                                <Link className="block" to={`user/create?index=${i}`}>
+                                    Edit |
                                 </Link>
+                                <div onClick={() => handleDelete(i)}>Delete</div>
                             </td>
                         </tr>
                     ))

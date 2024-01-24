@@ -10,13 +10,15 @@ export default function UserCreateEdit() {
         gender: ''
     })
     const [searchParams] = useSearchParams();
+    const targetUserIndex = searchParams.get('index');
 
     useEffect(() => {
-        const targetUserIndex = searchParams.get('index');
-        let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
-        const targetUser = userList[targetUserIndex];
-        console.log('targetUser', targetUser);
-        setUser({...user, ...targetUser});
+        if (targetUserIndex !== null) {
+            let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
+            const targetUser = userList[targetUserIndex];
+            console.log('targetUser', targetUser);
+            setUser(targetUser);
+        }
     }, []) 
 
     const handleChange = (e) => {
@@ -26,7 +28,15 @@ export default function UserCreateEdit() {
     function handleSubmit (e) {
         e.preventDefault();
         let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
-        userList.push(user);
+        if (targetUserIndex !== null) {
+            // Update user
+            userList.splice(targetUserIndex, 1, user);
+        }
+        else {
+            // Add user
+            userList.push(user);
+        }
+        
         localStorage.setItem('user_list', JSON.stringify(userList));
         navigate('/');
     }
@@ -136,12 +146,12 @@ export default function UserCreateEdit() {
                         >
                             Submit
                         </button>
-                    </form>
+                     </form>
+                   </div>
                 </div>
-                </div>
-            </div>
-            </div>
+              </div>
+           </div>
         </div>
-        </div>
+    </div>
     );
 }
