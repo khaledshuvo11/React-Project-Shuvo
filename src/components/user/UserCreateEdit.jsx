@@ -19,7 +19,7 @@ export default function UserCreateEdit() {
             console.log('targetUser', targetUser);
             setUser(targetUser);
         }
-    }, []) 
+    }, [])
 
     const handleChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
