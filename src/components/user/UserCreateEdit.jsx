@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import api from '../../api';
 
 export default function UserCreateEdit() {
     const navigate = useNavigate();
     const [user, setUser] = useState({
         name: '',
+        phone: '',
         email: '',
         date_of_birth: '',
         gender: ''
     })
     const [searchParams] = useSearchParams();
-    const targetUserIndex = searchParams.get('index');
+    const targetUserId = searchParams.get('id');
 
     useEffect(() => {
-        if (targetUserIndex !== null) {
-            let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
-            const targetUser = userList[targetUserIndex];
-            console.log('targetUser', targetUser);
-            setUser(targetUser);
+        if (targetUserId !== null) {
+            api.get('/users/'+targetUserId)
+            .then(response => {
+                console.log(response, 'response......');
+                setUser({
+                    name: response.data.name,
+                    phone: response.data.phone,
+                    email: response.data.email,
+                    date_of_birth: response.data.date_of_birth,
+                    gender: response.data.gender
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
         }
     }, [])
 
@@ -27,18 +39,20 @@ export default function UserCreateEdit() {
 
     function handleSubmit (e) {
         e.preventDefault();
-        let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
-        if (targetUserIndex !== null) {
-            // Update user
-            userList.splice(targetUserIndex, 1, user);
+
+        let formData = user;
+        if (targetUserId !== null) {
+            formData.id = targetUserId;
+            formData._method = 'put';
         }
-        else {
-            // Add user
-            userList.push(user);
-        }
-        
-        localStorage.setItem('user_list', JSON.stringify(userList));
-        navigate('/');
+        api.post('/users', formData)
+        .then(response => {
+            console.log(response, 'response......');
+            navigate('/');
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     return (
@@ -70,34 +84,50 @@ export default function UserCreateEdit() {
                             </div>
 
                             <div>
-                            <label for="email" className="block mt-2">
-                                Email
-                            </label>
-                            <input
-                                type="text"
-                                id="email"
-                                name="email"
-                                placeholder="Email."
-                                value={user.email}
-                                onChange={handleChange}
-                                className="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
-                                required
-                            />
+                                <label for="phone" className="block mt-2">
+                                    Phone
+                                </label>
+                                <input
+                                    type="text"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="phone."
+                                    value={user.phone}
+                                    onChange={handleChange}
+                                    className="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
+                                    required
+                                />
                             </div>
 
                             <div>
-                            <label for="date" className="block">
-                                Date_of_birth
-                            </label>
-                            <input
-                                type="date"
-                                id="date"
-                                name="date_of_birth"
-                                value={user.date_of_birth}
-                                onChange={handleChange}
-                                className="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
-                                required
-                            />
+                                <label for="email" className="block mt-2">
+                                    Email
+                                </label>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Email."
+                                    value={user.email}
+                                    onChange={handleChange}
+                                    className="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label for="date" className="block">
+                                    Date_of_birth
+                                </label>
+                                <input
+                                    type="date"
+                                    id="date"
+                                    name="date_of_birth"
+                                    value={user.date_of_birth}
+                                    onChange={handleChange}
+                                    className="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
+                                    required
+                                />
                             </div>
 
                             <div>

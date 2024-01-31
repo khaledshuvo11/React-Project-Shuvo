@@ -1,20 +1,31 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import api from '../../api';
 
 export default function UserIndex() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        const userList = JSON.parse(localStorage.getItem('user_list'));
-        setUsers(userList);
+        api.get('/users')
+        .then(response => {
+            console.log(response, 'response......');
+            setUsers(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }, [])
 
-    function handleDelete(index) {
-        let userList = JSON.parse(localStorage.getItem('user_list')) ?? [];
-        userList.splice(index, 1)
-        console.log('index', index);
-        localStorage.setItem('user_list', JSON.stringify(userList));
-        setUsers(userList);
+    function handleDelete(id) {
+        api.post('/users/delete', {id})
+        .then(response => {
+            console.log(response, 'response......');
+            setUsers(users.filter(item => item.id !== id));
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     return (
@@ -26,6 +37,7 @@ export default function UserIndex() {
             <table border="1" className="border w-full">
                 <tr>
                     <th>Name</th>
+                    <th>Phone</th>
                     <th>E-mail</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>
@@ -35,14 +47,15 @@ export default function UserIndex() {
                     users && users.map((item, i) => (
                         <tr>
                             <td>{item.name}</td>
+                            <td>{item.phone}</td>
                             <td>{item.email}</td>
                             <td>{item.date_of_birth}</td>
                             <td>{item.gender}</td>
                             <td>
-                                <Link className="block" to={`user/create?index=${i}`}>
+                                <Link className="block" to={`user/create?id=${item.id}`}>
                                     Edit |
                                 </Link>
-                                <div onClick={() => handleDelete(i)}>Delete</div>
+                                <div onClick={() => handleDelete(item.id)}>Delete</div>
                             </td>
                         </tr>
                     ))
